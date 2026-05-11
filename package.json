@@ -3,6 +3,8 @@
   "productName": "Papyrus",
   "private": true,
   "version": "1.0.0",
+  "description": "almost anything could be possible",
+  "author": "Tanvir (mailtanvir26@gmail.com)",
   "type": "module",
   "main": "main.js",
   "scripts": {
