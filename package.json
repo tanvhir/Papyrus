@@ -2,14 +2,14 @@
   "name": "papyrus",
   "productName": "Papyrus",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
+  "main": "main.js",
   "scripts": {
-    "dev": "vite --port=3000 --host=0.0.0.0",
+    "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview",
-    "clean": "rm -rf dist",
-    "lint": "tsc --noEmit"
+    "start": "electron .",
+    "make": "electron-forge make"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",
@@ -55,12 +55,14 @@
     "vite": "^6.2.3"
   },
   "devDependencies": {
+    "@electron-forge/cli": "^7.3.0",
+    "@electron-forge/maker-squirrel": "^7.3.0",
     "@types/express": "^4.17.21",
     "@types/node": "^22.14.0",
     "autoprefixer": "^10.4.21",
+    "electron": "^30.0.0",
     "tailwindcss": "^4.1.14",
     "tsx": "^4.21.0",
-    "typescript": "~5.8.2",
-    "vite": "^6.2.3"
+    "typescript": "~5.8.2"
   }
 }
