@@ -25,13 +25,11 @@ jobs:
           cat <<EOF > main.js
           const { app, BrowserWindow } = require('electron');
           const path = require('path');
-          const { fileURLToPath } = require('url');
-
           function createWindow() {
             const win = new BrowserWindow({
               width: 1200,
               height: 800,
-              webPreferences: { nodeIntegration: true }
+              webPreferences: { nodeIntegration: true, contextIsolation: false }
             });
             win.loadFile(path.join(__dirname, 'dist/index.html'));
           }
@@ -40,10 +38,11 @@ jobs:
           EOF
 
       - name: Setup Electron and Forge
-        # এখানে --yes অপশনটি সরিয়ে দেওয়া হয়েছে যা সমস্যার মেইন কারণ ছিল
         run: |
           npm install --save-dev electron @electron-forge/cli @electron-forge/maker-squirrel
           npx electron-forge import
+          # নিচের লাইনটি এরর সমাধান করবে (ফাইল রিনেম করা)
+          mv forge.config.js forge.config.cjs || true
 
       - name: Make EXE
         run: npm run make
