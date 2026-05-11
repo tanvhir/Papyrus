@@ -3,7 +3,7 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Underline from '@tiptap/extension-underline';
 import Placeholder from '@tiptap/extension-placeholder';
-import Image from '@tiptap/extension-image';
+// Image import করার দরকার নেই যদি ResizableImage ব্যবহার করেন
 import Link from '@tiptap/extension-link';
 import Subscript from '@tiptap/extension-subscript';
 import Superscript from '@tiptap/extension-superscript';
@@ -29,16 +29,9 @@ const Editor: React.FC<EditorProps> = ({ content, onChange, className, editorCla
     editable,
     extensions: [
       StarterKit.configure({
-        bulletList: {
-          HTMLAttributes: {
-            class: 'list-disc ml-6 space-y-2',
-          },
-        },
-        orderedList: {
-          HTMLAttributes: {
-            class: 'list-decimal ml-6 space-y-2',
-          },
-        },
+        // ডুপ্লিকেট এরর এড়াতে StarterKit থেকে এগুলো অফ করা হলো
+        history: true,
+        heading: { levels: [1, 2, 3] },
         horizontalRule: false,
       }),
       Underline,
@@ -71,10 +64,11 @@ const Editor: React.FC<EditorProps> = ({ content, onChange, className, editorCla
       }),
       MathExtension,
     ],
-    content,
+    content, // Initial content
     onUpdate: ({ editor }) => {
+      const html = editor.getHTML();
       if (onChange) {
-        onChange(editor.getHTML());
+        onChange(html);
       }
     },
     editorProps: {
@@ -90,9 +84,13 @@ const Editor: React.FC<EditorProps> = ({ content, onChange, className, editorCla
     }
   }, [editor, onInit]);
 
+  // কন্টেন্ট আপডেট হ্যান্ডলার (এটি শুধু তখনই চলবে যখন কন্টেন্ট বাইরে থেকে পরিবর্তিত হবে)
   React.useEffect(() => {
-    if (editor && content !== editor.getHTML()) {
-      editor.commands.setContent(content);
+    if (!editor) return;
+    
+    const isSame = editor.getHTML() === content;
+    if (!isSame) {
+      editor.commands.setContent(content, false);
     }
   }, [content, editor]);
 
